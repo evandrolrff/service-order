@@ -68,6 +68,8 @@ yarn-error.log
 
 ## Containers (personalizado)
 .containers/
+.vs/
+
 
 ## Outros
 _ReSharper*/
