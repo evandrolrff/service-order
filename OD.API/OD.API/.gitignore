@@ -53,11 +53,6 @@ artifacts/
 appsettings.Development.json
 secrets.json
 
-## Docker
-**/Dockerfile
-**/docker-compose.yml
-**/docker-compose.*.yml
-
 ## Testes e cobertura
 TestResults/
 *.coverage
