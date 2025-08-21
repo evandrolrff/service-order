@@ -1,4 +1,4 @@
-namespace OD.API.Models
+namespace ODAPI.Models
 {
     public class ErrorViewModel
     {

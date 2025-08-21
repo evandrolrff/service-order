@@ -1,0 +1,40 @@
+services:
+  odapi:
+    image: ${DOCKER_REGISTRY-}odapi
+    container_name: odapi
+    depends_on:
+      - oddatabase
+    build:
+      context: .
+      dockerfile: ODAPI/Dockerfile
+    ports:
+    - "5000:5000"
+    - "5001:5001"
+    command: ["sh", "-c", "dotnet ef database update"]
+
+  oddatabase:
+    image: postgres:latest
+    container_name: oddatabase
+    environment:
+      - POSTGRES_DB=od
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ./.containers/od-db:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+  
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: od-pgadmin
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@od.com
+      - PGADMIN_DEFAULT_PASSWORD=1234
+      - PGADMIN_LISTEN_PORT=80
+    ports:
+      - "5050:80"
+    volumes:
+      - ./.containers/pgadmin-data:/var/lib/pgadmin
+    depends_on:
+      - oddatabase
+  

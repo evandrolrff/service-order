@@ -12,19 +12,19 @@ EXPOSE 5001
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["OD.API/OD.API.csproj", "OD.API/"]
-RUN dotnet restore "./OD.API/OD.API.csproj"
+COPY ["ODAPI/ODAPI.csproj", "ODAPI/"]
+RUN dotnet restore "./ODAPI/ODAPI.csproj"
 COPY . .
-WORKDIR "/src/OD.API"
-RUN dotnet build "./OD.API.csproj" -c $BUILD_CONFIGURATION -o /app/build
+WORKDIR "/src/ODAPI"
+RUN dotnet build "./ODAPI.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # Esta fase é usada para publicar o projeto de serviço a ser copiado para a fase final
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./OD.API.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./ODAPI.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 # Esta fase é usada na produção ou quando executada no VS no modo normal (padrão quando não está usando a configuração de Depuração)
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "OD.API.dll"]
+ENTRYPOINT ["dotnet", "ODAPI.dll"]
